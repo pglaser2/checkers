@@ -1,25 +1,29 @@
-<!doctype html>
-<html ng-app="ngCheckers">
-<head>
+<!DOCTYPE html>
+<html ng-app='ngCheckers'>
+  <head>
 	<link rel="stylesheet" type="text/css" href="ngCheckers.css">
-<meta charset="utf-8">
-<title>Checkers</title>
-</head>
-
-<body ng-controller="checkersCtrl">
-	<div id="gameContainer">
-	<div class="row" ng-repeat ="row in board">
-	<div class="square" ng-style="setClass(square)" ng-repeat="square in row track by $index" ng-click="select(square)">
-	<div ng-style="setStyling(square)" class="circle"></div>	
-		
-		</div>	
-		</div> 
-	
+  </head>
+  <body ng-controller="checkersCtrl">
+  <div class="header">
+  <h1>Checkers</h1>
+  <p>By: Jenna, Sid, Poojan, Philipp, Alexandra, and Stephan</p>
+  </div>
+    <div id="gameContainer" class="content">
+		<div class="row" ng-repeat="row in board">
+			<div class="square" ng-style="setClass(square)" ng-repeat="square in row track by $index" ng-Click="select(square)">
+				<div ng-style="setStyling(square)" class="circle">
+				</div>
+			</div>
+		</div>
 	</div>
-	<div>Player Turn : {{player}}</div>
-	<div>Red Score : {{redScore}}</div>
-	<div>Black Score : {{blackScore}}</div>
-	<script src="angular.min.js"> </script>
-	<script src="ngCheckers.js"> </script>
-</body>
-</html>
+	<div class="content">
+		<div>Player Turn : {{player}}</div>
+		<div>Red Score : {{redScore}}</div>
+		<div>Black Score : {{blackScore}}</div>
+		</div>
+	<script src="angular.min.js"></script>
+	<script src="ngCheckers.js"></script>
+  </body>
+ </html>
+	
+	

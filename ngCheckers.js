@@ -15,7 +15,7 @@ angular.module("ngCheckers", [])
       this.matados = [];
     }
 
-    $scope.newGame = function () {
+    $scope.newGame = function() {
       $scope.player = RED;
       $scope.redScore = 0;
       $scope.blackScore = 0;
@@ -39,13 +39,13 @@ angular.module("ngCheckers", [])
     };
     $scope.newGame();
 
-    $scope.setStyling = function (square) {
+    $scope.setStyling = function(square) {
       if (square.player === RED) return { backgroundColor: "#FF0000" };
       else if (square.player === BLACK) return { backgroundColor: "#A3A3A3" };
       return { backgroundColor: "none" };
     };
 
-    $scope.setClass = function (square) {
+    $scope.setClass = function(square) {
       if (square.y % 2 === 0) {
         if (square.x % 2 === 0) {
           return { backgroundColor: square.isChoice ? "green" : "black" };
@@ -61,7 +61,7 @@ angular.module("ngCheckers", [])
       }
     };
 
-    $scope.select = function (square) {
+    $scope.select = function(square) {
       if (selectedSquare !== null && !square.player) {
         movePiece(square);
         resetChoices();
@@ -110,8 +110,9 @@ angular.module("ngCheckers", [])
 
     function movePiece(square) {
       if (square.isChoice) {
+		  var becomeKing = selectedSquare.isKing; //King Check
         // check if a piece was jumped over
-        if (square.matados.length > 0) {
+        for(var i = 0; i < square.matados.length; i++) {
           // for each piece in the matados array
           square.matados.forEach((piece) => {
             // remove the piece
@@ -119,17 +120,40 @@ angular.module("ngCheckers", [])
             // increase the score of the current player
             addScore(selectedSquare.player);
           });
+		  var matado = square.matados[i];
+		  becomeKing = becomeKing || becomeKingAfterJump(matado.x, matado.y);
+		  
         }
         square.player = selectedSquare.player;
+		square.isKing = becomeKing || isKing(square);
         selectedSquare.player = null;
+		selectedSquare.isKing = false;
         $scope.player = $scope.player === RED ? BLACK : RED;
       }
     }
+	
+	function isKing(square){
+		if($scope.player === RED) {
+			if(square.y === 0)
+				return true;
+		} else {
+			if(square.y === BOARD_WIDTH - 1)
+				return true;
+		}
+		return false;
+	}
+	
+	function becomeKingAfterJump(x, y){
+		return($scope.player === RED && y == 1) ||
+			   ($scope.player === BLACK && y == BOARD_WIDTH - 2);
+	}
+	
 
     function setChoices(x, y, depth, matados, oldX, oldY, isKing) {
       if (depth > 10) return;
-      isKing = isKing || ($scope.player === RED && y == 0);
-      $scope.player === BLACK && y == BOARD_WIDTH - 1;
+      isKing = isKing || 
+				($scope.player === RED && y == 0) || 
+				($scope.player === BLACK && y == BOARD_WIDTH - 1);
       if ($scope.player === RED || isKing) {
         //check left side, a square might not be available
         //Upper Left
@@ -152,7 +176,8 @@ angular.module("ngCheckers", [])
                   // create a full copy of the matados array and define it as jumpers
                   var jumpers = matados.slice(0);
                   // check if the opponents piece located in UP_LEFT is included in the jumpers array, if not push it into it
-                  if (jumpers.indexOf(UP_LEFT) === -1) jumpers.push(UP_LEFT);
+                  if (jumpers.indexOf(UP_LEFT) === -1) 
+					  jumpers.push(UP_LEFT);
                   // reference the jumpers array by the squares matados variable
                   UP_LEFT_2.matados = jumpers;
                   setChoices(x - 2, y - 2, depth + 1, jumpers, x, y, isKing);
@@ -197,11 +222,7 @@ angular.module("ngCheckers", [])
           var LOWER_LEFT = $scope.board[y + 1][x - 1];
           if (LOWER_LEFT.player) {
             if (LOWER_LEFT.player !== $scope.player) {
-              if (
-                x > 1 &&
-                y < BOARD_WIDTH - 2 &&
-                !(x - 2 === oldX && y + 2 === oldY)
-              ) {
+              if (x > 1 &&y < BOARD_WIDTH - 2 &&!(x - 2 === oldX && y + 2 === oldY)) {
                 var LOWER_LEFT_2 = $scope.board[y + 2][x - 2];
                 if (!LOWER_LEFT_2.player) {
                   LOWER_LEFT_2.isChoice = true;

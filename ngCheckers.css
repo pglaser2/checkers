@@ -47,6 +47,20 @@
   font-size: 30px;
 }
 
+.left {
+ float: left;
+ padding: 0 20px 20px 0;
+ position: relative;
+ top: -300px;
+}
+
+.right {
+	float: right;
+	padding: 0 20px 20px 0;
+	position: relative;
+	top: -300px;
+}
+
 #startGame{
 	width: 120px;
 	padding: 10px;

@@ -3,9 +3,9 @@
   <head>
 	<link rel="stylesheet" type="text/css" href="ngCheckers.css">
   </head>
-  <body ng-controller="checkersCtrl">
+  <body ng-controller="checkersCtrl" style="background-color:lightblue">
   <div class="header">
-  <h1>Checkers</h1>
+  <h1>Checkers - Team C</h1>
   <p>By: Jenna, Sid, Poojan, Philipp, Alexandra, and Stephan</p>
   </div>
     <div id="gameContainer" class="content">
@@ -16,11 +16,17 @@
 			</div>
 		</div>
 	</div>
+	<div class="left">
+		<img src="psulogo.png" alt="PSU Logo" width="400" height="200">
+	</div>
+	<div class="right">
+		<img src="hoflogo.png" alt="Hof Logo" width="400" height="200">
+	</div>
 	<div class="content">
-		<div>Player Turn : {{player}}</div>
-		<div>Red Score : {{redScore}}</div>
-		<div>Black Score : {{blackScore}}</div>
-		</div>
+		<div style="color:green; font-weight:bolder;"><h2>Player Turn : {{player}}</h2></div>
+		<div style="color:red"><h3>Red Score : {{redScore}}</h3></div>
+		<div><h3>Black Score : {{blackScore}}</h3></div>
+	</div>
 	<script src="angular.min.js"></script>
 	<script src="ngCheckers.js"></script>
   </body>
